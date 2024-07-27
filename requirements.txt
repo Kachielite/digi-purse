@@ -1,2 +1,7 @@
-fastapi~=0.111.1
-SQLAlchemy~=2.0.31
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+pydantic
+python-jose
+passlib[bcrypt]

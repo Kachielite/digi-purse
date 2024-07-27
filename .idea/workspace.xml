@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59280960-00b3-4ea1-ad8e-bc822a5dc50a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/v1/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/v1/endpoints/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +20,7 @@
         <option value="FastAPI main" />
         <option value="FastAPI test_main" />
         <option value="Python Script" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
@@ -51,6 +52,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app" />
+    </key>
+  </component>
   <component name="RunManager" selected="FastAPI.DigiPurse">
     <configuration name="All in test_main" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$PROJECT_DIR$/test_main.http">
       <method v="2" />
@@ -93,7 +99,7 @@
       <option name="presentableId" value="Default" />
       <updated>1721961048067</updated>
       <workItem from="1721961058501" duration="1578000" />
-      <workItem from="1722100846221" duration="1276000" />
+      <workItem from="1722100846221" duration="2804000" />
     </task>
     <servers />
   </component>

@@ -10,4 +10,4 @@ services:
     volumes:
       - .:/app
     environment:
-      - DATABASE_URL=postgresql://derrickmadumere:madumere@db:5432/digipurse
+      - DATABASE_URL=

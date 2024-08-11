@@ -7,7 +7,6 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
 
 from app.core.config import settings
-from app.utilities.codes import INVALID_TOKEN, AUTHENTICATION_FAILED, TOKEN_EXPIRED
 
 ALGORITHM = settings.algorithm
 SECRET_KEY = settings.secret_key
@@ -35,20 +34,3 @@ def create_token(username: str, user_id: int, role: str):
     return jwt.encode(encoded, SECRET_KEY, algorithm=ALGORITHM)
 
 
-# Get current user
-def get_current_user(token: Annotated[str: Depends(oauth2_bearer)]):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        username = payload.get("user")
-        user_id = payload.get("id")
-        role = payload.get("role")
-        expires_at = payload.get("exp")
-
-        if expires_at < datetime.now(timezone.utc):
-            raise HTTPException(status_code=401, detail=TOKEN_EXPIRED)
-        if username is None:
-            raise HTTPException(status_code=401, detail=AUTHENTICATION_FAILED)
-        return {"username": username, "user_id": user_id, "role": role}
-
-    except JWTError:
-        raise HTTPException(status_code=401, detail=INVALID_TOKEN)

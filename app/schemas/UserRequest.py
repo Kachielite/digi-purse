@@ -1,20 +1,26 @@
+from datetime import datetime
+from typing import Optional
+
 from pydantic import BaseModel, Field, EmailStr
+
+from enums.RoleEnum import RoleEnum
 
 
 class UserRequest(BaseModel):
-    id: int = Field(description="ID not required on creation", default=None)
     username: str = Field(min_length=4)
     email: EmailStr
     phone_number: str
-    password: Field(min_length=6)
-    role: str
+    password: str = Field(min_length=6)
+    role: RoleEnum
 
-    model_config = {
-        'json_schema_extra': {
-            'username': 'Carlos',
-            'email': 'carlos@email.com',
-            'phone_number' : '234XXXXXXXXXXX',
-            'password': 'xxxxxxxxxxx',
-            'role': 'USER'
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "username": "Carlos",
+                "email": "carlos@email.com",
+                "phone_number": "234",
+                "password": "strong_password",
+                "role": "USER"
+            }
         }
-    }

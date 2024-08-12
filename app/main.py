@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.api.v1.endpoints import auth
 from app.db.base import Base
 from app.db.session import engine
 
@@ -7,11 +8,10 @@ app = FastAPI()
 Base.metadata.create_all(engine)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+# Health Check
+@app.get("/healthy")
+def check_health():
+    return {"status": "System Healthy"}
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+app.include_router(auth.router)

@@ -1,10 +1,8 @@
-from datetime import datetime, timezone
-from typing import Annotated
+from datetime import datetime, timezone, timedelta
 
-from fastapi import Depends, HTTPException
 from jose import jwt, JWTError
 from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordBearer
+from pydantic import ValidationError
 
 from app.core.config import settings
 
@@ -13,24 +11,34 @@ SECRET_KEY = settings.secret_key
 EXPIRATION_TIME = settings.access_token_expire_minutes
 
 bcrypt_password = CryptContext(schemes="bcrypt", deprecated="auto")
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/token", scheme_name="JWT")
 
 
-# Encrypt password utility
+# Encrypt password
 def encrypt_password(password: str):
     return bcrypt_password.hash(password)
 
 
-# Dencrypt password utility
+# Dencrypt password
 def validate_password(password: str, hash_password: str):
     return bcrypt_password.verify(password, hash_password)
 
 
-# Create token utility
+# Create token
 def create_token(username: str, user_id: int, role: str):
     encoded = {"user": username, "id": user_id, "role": role}
-    expires_at = datetime.now(timezone.utc) + EXPIRATION_TIME
+    expires_at = datetime.now(timezone.utc) + timedelta(minutes=EXPIRATION_TIME)
     encoded.update({"exp": expires_at})
     return jwt.encode(encoded, SECRET_KEY, algorithm=ALGORITHM)
 
 
+# Decode token
+def decode_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        username = payload.get("user")
+        user_id = payload.get("id")
+        role = payload.get("role")
+        expires_at = payload.get("exp")
+        return {"username": username, "user_id": user_id, "role": role, "expires_at": expires_at}
+    except (JWTError, ValidationError) as e:
+        raise ValueError("Invalid token") from e

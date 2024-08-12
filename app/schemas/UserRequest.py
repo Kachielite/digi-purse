@@ -10,7 +10,6 @@ class UserRequest(BaseModel):
     password: str = Field(min_length=6)
     role: RoleEnum
 
-
     class Config:
         schema_extra = {
             "example": {

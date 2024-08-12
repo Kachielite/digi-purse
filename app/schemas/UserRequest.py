@@ -1,9 +1,6 @@
-from datetime import datetime
-from typing import Optional
-
 from pydantic import BaseModel, Field, EmailStr
 
-from enums.RoleEnum import RoleEnum
+from app.enums.RoleEnum import RoleEnum
 
 
 class UserRequest(BaseModel):

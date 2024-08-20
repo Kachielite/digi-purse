@@ -1,5 +1,6 @@
 from fastapi.security import OAuth2PasswordRequestForm
 
+from app.core.security import create_token
 from app.crud.crud_auth import create_new_user, authenticate_user, get_current_user
 from app.models.User import User
 from app.schemas.UserRequest import UserRequest
@@ -58,8 +59,15 @@ def test_get_current_user(db_session, user_payload):
     _, response = authenticate_user(form_data, db_session)
 
     token = response.get("access_token")
-    status_code, response = get_current_user(token)
+    status_code, response = get_current_user(token, db_session)
 
     assert status_code == 200
     assert user_payload.get("username") == response.get("username")
 
+
+def test_get_current_user_invalid_token(db_session, user_payload):
+    invalid_token = create_token("test@mail.com", 1, "ADMIN")
+    status_code, response = get_current_user(invalid_token, db_session)
+
+    assert status_code != 200
+    assert response.get("message") == "Invalid token"

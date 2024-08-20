@@ -1,3 +1,6 @@
+from app.core.security import create_token
+
+
 def test_new_user(test_client, user_payload):
     response = test_client.post('/auth/create', json=user_payload)
 
@@ -51,14 +54,3 @@ def test_authenticate_failure_with_wrong_user(test_client, user_payload):
     assert response.status_code == 404
     assert response.json().get("detail") == "User not found"
 
-
-def test_get_current_user_failure(test_client, user_payload, mocker):
-    test_client.post('/auth/create', json=user_payload)
-    token_response = test_client.post('/auth/token',
-                                      data={"username": user_payload.get('email'),
-                                            "password": user_payload.get('password')})
-
-    token = token_response.json().get('access_token')
-    response = test_client.get('/auth/me', headers={"Authorization": f"Bearer {token}yrd345"})
-
-    assert response.status_code != 200

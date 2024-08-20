@@ -1,8 +1,10 @@
 import pytest
+from fastapi import HTTPException
 from sqlalchemy import create_engine, StaticPool
 from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
 
+from app.crud.crud_auth import get_current_user
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
@@ -45,6 +47,21 @@ def test_client(db_session):
     app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as test_client:
         yield test_client
+
+
+@pytest.fixture(scope="function")
+def override_get_current_user(db_session):
+    """Override the get_current_user dependency to use the db_session."""
+
+    def _override_get_current_user(token: str, db=db_session):
+        status_code, user = get_current_user(token, db)
+        if status_code != 200:
+            raise HTTPException(status_code=status_code, detail=user["message"])
+        return user
+
+    app.dependency_overrides[get_current_user] = _override_get_current_user
+    yield
+    app.dependency_overrides.pop(get_current_user, None)
 
 
 # Fixture to generate a user payload

@@ -1,3 +1,4 @@
-sonar.sources=app/
-sonar.tests=tests/
+sonar.sources=app
+sonar.tests=tests
 sonar.python.coverage.reportPaths=coverage.xml
+sonar.python.xunit.reportPaths=coverage.xml

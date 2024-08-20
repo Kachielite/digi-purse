@@ -159,3 +159,6 @@ yarn-error.log
 Thumbs.db
 ehthumbs.db
 *.stackdump
+
+run_sonar.sh
+.scannerwork/

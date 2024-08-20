@@ -21,15 +21,14 @@ jobs:
       - name: Install dependencies
         run: pip install tox
 
-      - name: Set up environment variables
+      - name: Run tests
+        # Set environment variables and run the tests in a single step
+        run: tox -e py
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           ALGORITHM: ${{ secrets.ALGORITHM }}
           ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
-
-      - name: Run tests
-        run: tox -e py
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master

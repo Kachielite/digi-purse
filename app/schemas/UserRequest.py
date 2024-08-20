@@ -11,7 +11,7 @@ class UserRequest(BaseModel):
     role: RoleEnum
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "username": "Carlos",
                 "email": "carlos@email.com",

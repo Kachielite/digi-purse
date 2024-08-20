@@ -30,12 +30,13 @@ def create_new_user(user_to_be_created: UserRequest, db: Session):
 
 
 # Get current user
-def get_current_user(token: str):
+def get_current_user(token: str, db: Session):
     try:
         token_data = decode_token(token)
         if token_data.get("expires_at") < datetime.now(timezone.utc).timestamp():
             return 401, {"message": "token expired"}
-        if token_data.get("username") is None:
+        username = db.query(User).filter(User.username == token_data.get('username')).first()
+        if username is None:
             return 401, {"message": "Invalid token"}
         return 200, {"username": token_data.get("username"), "user_id": token_data.get("user_id"), "role": token_data.get("role")}
     except ValueError:

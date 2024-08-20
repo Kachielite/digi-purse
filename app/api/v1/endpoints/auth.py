@@ -34,8 +34,8 @@ async def authenticate(form_data: Annotated[OAuth2PasswordRequestForm, Depends()
 
 
 @router.get("/me", status_code=status.HTTP_200_OK)
-async def current_user(token: Annotated[str, Depends(oauth2_bearer)]):
-    code, response = get_current_user(token)
+async def current_user(token: Annotated[str, Depends(oauth2_bearer)], db: db_dependency):
+    code, response = get_current_user(token, db)
     if code != 200:
         raise HTTPException(status_code=code, detail=response["message"])
     return response

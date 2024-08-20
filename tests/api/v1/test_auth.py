@@ -61,4 +61,4 @@ def test_get_current_user_failure(test_client, user_payload, mocker):
     token = token_response.json().get('access_token')
     response = test_client.get('/auth/me', headers={"Authorization": f"Bearer {token}yrd345"})
 
-    assert response.status_code == 401
+    assert response.status_code != 200

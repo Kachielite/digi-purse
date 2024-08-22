@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-router = APIRouter(prefix="/health", tags=["Health Check"])
+router = APIRouter(prefix="/health", tags=["Health check"])
 
 
 # Health Check

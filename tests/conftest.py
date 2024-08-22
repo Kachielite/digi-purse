@@ -79,6 +79,84 @@ def user_payload():
 
 
 @pytest.fixture()
+def admin_user_payload():
+    """Generate a user payload"""
+    return {
+        "username": "Micheal Gabriel",
+        "email": "micheal@gmail.com",
+        "phone_number": "2349069943120",
+        "password": "Password1234",
+        "role": "ADMIN",
+        "is_active": True
+    }
+
+
+@pytest.fixture()
+def sys_user_payload():
+    """Generate a sys user payload"""
+    return {
+        "username": "John Doe",
+        "email": "john.doe@gmail.com",
+        "phone_number": "2349069943112",
+        "password": "Password1234",
+        "role": "SYS_ADMIN",
+        "is_active": True
+    }
+
+
+@pytest.fixture()
+def normal_user_payload():
+    """Generate a normal user payload"""
+    return {
+        "username": "Paul Doe",
+        "email": "paul.doe@gmail.com",
+        "phone_number": "2349069943113",
+        "password": "Password1234",
+        "role": "USER",
+        "is_active": True
+    }
+
+
+@pytest.fixture()
+def user_payload_existing_email():
+    """Generate a user payload"""
+    return {
+        "username": "Jack Doe",
+        "email": "kachi.elite@gmail.com",
+        "phone_number": "2349069943114",
+        "password": "Password1234",
+        "role": "ADMIN",
+        "is_active": True
+    }
+
+
+@pytest.fixture()
+def user_payload_existing_phone_number():
+    """Generate a user payload"""
+    return {
+        "username": "Jack Doe",
+        "email": "kachi1.elite@gmail.com",
+        "phone_number": "2349069943111",
+        "password": "Password1234",
+        "role": "ADMIN",
+        "is_active": True
+    }
+
+
+@pytest.fixture()
+def user_payload_existing_username():
+    """Generate a user payload"""
+    return {
+        "username": "kachi elite",
+        "email": "kachi2.elite@gmail.com",
+        "phone_number": "2349069943118",
+        "password": "Password1234",
+        "role": "ADMIN",
+        "is_active": True
+    }
+
+
+@pytest.fixture()
 def bad_user_payload():
     """Generate a user payload"""
     return {
@@ -88,4 +166,13 @@ def bad_user_payload():
         "hash_password": "Password1234",
         "role": "SYS_ADMIN",
         "is_active": True
+    }
+
+
+@pytest.fixture()
+def user_update_payload():
+    """Generate a user update payload"""
+    return {
+        "role": "ADMIN",
+        "is_active": False,
     }

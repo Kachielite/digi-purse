@@ -10,9 +10,8 @@ def get_user(db: Session, user_id: int):
 
 
 def check_admin_user(user: dict):
-    _, user_info = user
-    if user_info is None or user_info.get("role") in ["ADMIN", "SYS_ADMIN"]:
-        return user_info
+    if user is None or user.get("role") in ["ADMIN", "SYS_ADMIN"]:
+        return user
     else:
         return None
 
@@ -38,11 +37,11 @@ def create_user(user_to_be_created: UserRequest, db: Session, user: dict):
     if check_admin_user(user) is None:
         return 401, {"message": "You do not have enough permission to create users"}
     if db.query(User).filter(User.email == user_to_be_created.email).first():
-        return 403, {"message": "User with the associated email already exist"}
+        return 400, {"message": "User with the associated email already exist"}
     if db.query(User).filter(User.phone_number == user_to_be_created.phone_number).first():
-        return 403, {"message": "User with the associated phone number already exist"}
+        return 400, {"message": "User with the associated phone number already exist"}
     if db.query(User).filter(User.username == user_to_be_created.username).first():
-        return 403, {"message": "User with the associated username already exist"}
+        return 400, {"message": "User with the associated username already exist"}
     new_user = User(
         username=user_to_be_created.username,
         email=user_to_be_created.email,
@@ -80,17 +79,16 @@ def update_user_data(user_to_be_updated: UserUpdateRequest,
 
 # Delete user
 def delete_user(user: dict, db: Session, user_id: int):
-    _, user_info = user
     user_to_be_deleted = get_user(db, user_id)
     if user_to_be_deleted is None:
         return 404, {"message": "User not found"}
-    if user_info.get("role") == "USER":
+    if user.get("role") == "USER":
         return 401, {"message": "You do not have enough permission to delete users"}
-    if user_info.get("role") != "SYS_ADMIN" and user_to_be_deleted.role == "ADMIN":
+    if user.get("role") != "SYS_ADMIN" and user_to_be_deleted.role == "ADMIN":
         return 401, {"message": "Only Sys admin can delete Admin users"}
-    if user_info.get("role") == "ADMIN" and user_to_be_deleted.role == "SYS_ADMIN":
+    if user.get("role") == "ADMIN" and user_to_be_deleted.role == "SYS_ADMIN":
         return 401, {"message": "Only Sys admin can delete a Sys admin user"}
-    if user_info.get("role") in ["SYS_ADMIN", "ADMIN"] and user_to_be_deleted.role == "USER":
+    if user.get("role") in ["SYS_ADMIN", "ADMIN"] and user_to_be_deleted.role == "USER":
         db.query(User).filter(User.id == user_to_be_deleted.id).delete()
         db.commit()
     return 200, {"message": "User deleted successfully"}

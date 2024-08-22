@@ -1,16 +1,21 @@
 from datetime import datetime, timezone
+from typing import Annotated
 
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.core.security import encrypt_password, validate_password, create_token, decode_token
+from app.db.session import get_db
 from app.models.User import User
 from app.schemas.UserRequest import UserRequest
 
 ALGORITHM = settings.algorithm
 SECRET_KEY = settings.secret_key
 EXPIRATION_TIME = settings.access_token_expire_minutes
+
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/token", scheme_name="JWT")
 
 
 # Create new user
@@ -30,7 +35,7 @@ def create_new_user(user_to_be_created: UserRequest, db: Session):
 
 
 # Get current user
-def get_current_user(token: str, db: Session):
+def get_current_user(token: Annotated[str, Depends(oauth2_bearer)], db: Annotated[Session, Depends(get_db)]):
     try:
         token_data = decode_token(token)
         if token_data.get("expires_at") < datetime.now(timezone.utc).timestamp():

@@ -16,9 +16,9 @@ class User(Base):
     role = Column(Enum("SYS_ADMIN", "ADMIN", "USER", name="role"), nullable=False)
     is_active = Column(Boolean)
     created_at = Column(DateTime, default=datetime.now)
-    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)  # Corrected
 
 
 @event.listens_for(User, "before_update")
 def receive_before_update(mapper, connection, target):
-    target.updated_at = datetime.now
+    target.updated_at = datetime.now()

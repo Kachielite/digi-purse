@@ -1,6 +1,3 @@
-from app.core.security import create_token
-
-
 def test_new_user(test_client, user_payload):
     response = test_client.post('/auth/create', json=user_payload)
 

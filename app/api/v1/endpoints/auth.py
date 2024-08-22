@@ -1,18 +1,14 @@
-from typing import Annotated, Dict
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from sqlalchemy.orm import Session
+from fastapi.security import OAuth2PasswordRequestForm
 from starlette import status
 
-from app.db.session import get_db
+from app.core.dependency import db_dependency
+from app.crud.crud_auth import create_new_user, authenticate_user, get_current_user, oauth2_bearer
 from app.schemas.UserRequest import UserRequest
-from app.crud.crud_auth import create_new_user, authenticate_user, get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
-
-db_dependency = Annotated[Session, Depends(get_db)]
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/token", scheme_name="JWT")
 
 
 # Create new user

@@ -1,3 +1,5 @@
+from typing import Union
+
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 
@@ -42,7 +44,8 @@ def create_wallet(db: Session, user: dict, wallet: WalletCreationRequest):
 
 
 # Read wallet details
-def read_wallet_details(db: Session, user: dict, user_id: int | None, wallet_id: str | None, phone_number: str | None):
+def read_wallet_details(db: Session, user: dict, user_id: Union[int, None], wallet_id: Union[str, None],
+                        phone_number: Union[str, None]):
     # Ensure at least one identifier is provided
     if not any([user_id, wallet_id, phone_number]):
         return 400, {"message": "At least one of user_id, wallet_id, or phone_number must be provided"}

@@ -12,6 +12,9 @@ no_read_permission = "You do not have enough permission to read wallets"
 
 # Check if user is an admin or wallet owner
 def is_admin_or_wallet_owner(user: dict, user_id: int):
+    if user is None:
+        return False
+
     admin_user = check_admin_user(user)
     wallet_owner = user.get("user_id") == user_id
 

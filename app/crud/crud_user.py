@@ -103,7 +103,7 @@ def delete_user(user: dict, db: Session, user_id: int):
     if user.get("role") == "ADMIN" and user_to_be_deleted.role == "SYS_ADMIN":
         return 401, {"message": "Only Sys admin can delete a Sys admin user"}
     if user.get("role") in ["SYS_ADMIN", "ADMIN"] and user_to_be_deleted.role == "USER":
-        user_to_be_deleted.is_active == False
+        user_to_be_deleted.is_active = False
         db.add(user_to_be_deleted)
         db.commit()
     return 200, {"message": "User deleted successfully"}

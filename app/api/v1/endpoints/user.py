@@ -4,7 +4,7 @@ from starlette import status
 from app.core.dependency import user_dependency, db_dependency
 from app.crud.crud_user import create_user, delete_user, update_user_data, get_all_users
 from app.schemas.UserSchemas import UserRequest, UserUpdateRequest
-from app.utilities.helpers import get_user_info
+from app.utilities.extract_user_info import get_user_info
 
 router = APIRouter(tags=["Manage users"], prefix="/users")
 

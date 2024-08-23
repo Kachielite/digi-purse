@@ -3,8 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.crud.crud_auth import authenticate_user, get_current_user, create_new_user
 from app.crud.crud_user import get_all_users, create_user, update_user_data, delete_user
 from app.models.User import User
-from app.schemas.UserRequest import UserRequest
-from app.schemas.UserSchemas import UserUpdateRequest
+from app.schemas.UserSchemas import UserUpdateRequest, UserRequest
 
 
 def creating_user(user_data, db):
@@ -99,7 +98,7 @@ def test_create_user_with_new_user_admin(db_session, user_payload, normal_user_p
     status_code, response = create_user(user_request, db_session, token)
 
     assert status_code == 201
-    assert response["message"] == "User created successfully"
+    assert response["message"] == "User and wallet created successfully"
 
 
 def test_update_user_by_normal_user(db_session, normal_user_payload, user_update_payload):

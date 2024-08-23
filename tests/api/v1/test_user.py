@@ -78,7 +78,7 @@ def test_create_user(test_client, user_payload, normal_user_payload):
                                 json=normal_user_payload)
 
     assert response.status_code == 201
-    assert response.json().get("message") == "User created successfully"
+    assert response.json().get("message") == "User and wallet created successfully"
 
 
 def test_update_user(test_client, user_payload, normal_user_payload, db_session, user_update_payload):

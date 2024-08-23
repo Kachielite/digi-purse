@@ -176,3 +176,4 @@ def user_update_payload():
         "role": "ADMIN",
         "is_active": False,
     }
+

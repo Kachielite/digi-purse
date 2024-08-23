@@ -30,6 +30,7 @@ def create_wallet(db: Session, user: dict, wallet: WalletCreationRequest):
     if user_id_exists and user_phone_number_exists:
         return 400, {"message": "User already has a wallet"}
 
+
     request = Wallet(
         user_id=wallet.user_id,
         user_phone_number=wallet.user_phone_number
@@ -37,7 +38,7 @@ def create_wallet(db: Session, user: dict, wallet: WalletCreationRequest):
 
     db.add(request)
     db.commit()
-    return 200, {"message": "Wallet created successfully"}
+    return 201, {"message": "Wallet created successfully"}
 
 
 # Read wallet details
@@ -115,7 +116,7 @@ def block_user_wallet(user: dict, db: Session, wallet_id: str, wallet_update: Wa
 
     if user_wallet.is_blocked is wallet_update.is_blocked:
         wallet_block_state = "blocked" if wallet_update.is_blocked else "unblocked"
-        return 200, {"message": f"Wallet is already {wallet_block_state}"}
+        return 400, {"message": f"Wallet is already {wallet_block_state}"}
 
     user_wallet.is_blocked = wallet_update.is_blocked
 

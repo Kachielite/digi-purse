@@ -49,6 +49,13 @@ def create_user(user_to_be_created: UserRequest, db: Session, user: dict):
     db.add(new_user)
     db.flush()  # Flush the session to assign an ID to new_user without committing to the DB yet
 
+    # Check if the user has a wallet
+    user_id_exists = db.query(Wallet).filter(Wallet.user_id == new_user.id).first()
+    user_phone_number_exists = db.query(Wallet).filter(Wallet.user_phone_number == new_user.phone_number).first()
+
+    if user_id_exists and user_phone_number_exists:
+        return 400, {"message": "User already has a wallet"}
+
     # Create the wallet associated with the new user
     new_user_wallet = Wallet(
         user_id=new_user.id,

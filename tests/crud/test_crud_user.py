@@ -98,7 +98,7 @@ def test_create_user_with_new_user_admin(db_session, user_payload, normal_user_p
     status_code, response = create_user(user_request, db_session, token)
 
     assert status_code == 201
-    assert response["message"] == "User created successfully"
+    assert response["message"] == "User and wallet created successfully"
 
 
 def test_update_user_by_normal_user(db_session, normal_user_payload, user_update_payload):

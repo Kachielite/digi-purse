@@ -6,7 +6,7 @@ from starlette import status
 
 from app.core.dependency import db_dependency
 from app.crud.crud_auth import create_new_user, authenticate_user, get_current_user, oauth2_bearer
-from app.schemas.UserRequest import UserRequest
+from app.schemas.UserSchemas import UserRequest
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 

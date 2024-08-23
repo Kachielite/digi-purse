@@ -3,8 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.crud.crud_auth import authenticate_user, get_current_user, create_new_user
 from app.crud.crud_user import get_all_users, create_user, update_user_data, delete_user
 from app.models.User import User
-from app.schemas.UserRequest import UserRequest
-from app.schemas.UserSchemas import UserUpdateRequest
+from app.schemas.UserSchemas import UserUpdateRequest, UserRequest
 
 
 def creating_user(user_data, db):

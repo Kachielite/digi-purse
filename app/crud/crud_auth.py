@@ -9,7 +9,7 @@ from app.core.config import settings
 from app.core.security import encrypt_password, validate_password, create_token, decode_token
 from app.db.session import get_db
 from app.models.User import User
-from app.schemas.UserRequest import UserRequest
+from app.schemas.UserSchemas import UserRequest
 
 ALGORITHM = settings.algorithm
 SECRET_KEY = settings.secret_key

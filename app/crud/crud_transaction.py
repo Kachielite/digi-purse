@@ -11,6 +11,10 @@ def top_wallet(db: Session, user: dict, request: TransactionRequest):
         return 403, {"message": "Unauthorized access"}
 
     wallet_to_be_credited = db.query(Wallet).filter(Wallet.user_phone_number == request.destination).first()
+
+    if not wallet_to_be_credited or wallet_to_be_credited.is_deleted:
+        return 404, {"message": "Wallet not found"}
+
     wallet_to_be_credited.balance += request.amount
 
     transaction = Transaction(
@@ -33,19 +37,17 @@ def debit_wallet(db: Session, user: dict, request: TransactionRequest):
 
     wallet_to_be_debited = db.query(Wallet).filter(Wallet.user_phone_number == request.destination).first()
 
-    print(wallet_to_be_debited)
-
     if not wallet_to_be_debited or wallet_to_be_debited.is_deleted:
         return 404, {"message": "Wallet not found"}
+
+    if wallet_to_be_debited.user_id == user.get("user_id"):
+        return 400, {"message": "You cannot debit your own wallet"}
 
     if wallet_to_be_debited.is_blocked:
         return 403, {"message": "Wallet is blocked"}
 
     if wallet_to_be_debited.balance < request.amount:
         return 400, {"message": "Insufficient balance"}
-
-    if wallet_to_be_debited.user_id == user.get("user_id"):
-        return 400, {"message": "You cannot debit your own wallet"}
 
     wallet_to_be_debited.balance -= request.amount
 
@@ -117,6 +119,7 @@ def transaction_user_history(db: Session, user: dict, user_id: str, limit: int =
 
 
 def transaction_by_id(db: Session, user: dict, transaction_id: str):
+    print(f"transaction_id: {transaction_id}")
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
 

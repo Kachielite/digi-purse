@@ -177,3 +177,35 @@ def user_update_payload():
         "is_active": False,
     }
 
+
+@pytest.fixture()
+def credit_transaction_payload():
+    """Generate a credit transaction"""
+    return {
+          "amount": 100,
+          "destination": "2349069943113",
+          "source": "TOP UP",
+          "type": "credit"
+    }
+
+
+@pytest.fixture()
+def debit_transaction_payload():
+    """Generate a credit transaction"""
+    return {
+          "amount": 100,
+          "destination": "2349069943113",
+          "source": "SERVICE",
+          "type": "debit"
+    }
+
+
+@pytest.fixture()
+def sys_user_debit_transaction_payload():
+    """Generate a credit transaction"""
+    return {
+          "amount": 100,
+          "destination": "2349069943112",
+          "source": "SERVICE",
+          "type": "debit"
+    }

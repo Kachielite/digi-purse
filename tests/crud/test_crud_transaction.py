@@ -217,6 +217,20 @@ def test_get_all_transaction_history(db_session, sys_user_payload, normal_user_p
     assert len(response) == 2
 
 
+def test_get_all_transaction_history_by_normal_user(db_session, normal_user_payload, debit_transaction_payload,
+                                                    credit_transaction_payload):
+    # create normal user
+    creating_user(normal_user_payload, db_session)
+    # authenticate normal user
+    token = authenticating_user(normal_user_payload, db_session)
+
+    # get transaction history
+    status_code, response = transaction_all_history(db_session, token)
+
+    assert status_code == 403
+    assert response.get('message') == "Unauthorized access"
+
+
 def test_get_user_transactions_history(db_session, sys_user_payload, normal_user_payload, debit_transaction_payload,
                                        credit_transaction_payload):
     # create superuser
@@ -242,6 +256,21 @@ def test_get_user_transactions_history(db_session, sys_user_payload, normal_user
 
     assert status_code == 200
     assert len(response) == 2
+
+
+def test_get_user_transactions_history_by_normal_user(db_session, sys_user_payload, normal_user_payload,
+                                                      debit_transaction_payload,
+                                                      credit_transaction_payload):
+    # create superuser
+    creating_user(normal_user_payload, db_session)
+    # authenticate superuser
+    token = authenticating_user(normal_user_payload, db_session)
+
+    # get transaction history
+    status_code, response = transaction_user_history(db_session, token, 1)
+
+    assert status_code == 403
+    assert response.get('message') == "Unauthorized access"
 
 
 def test_get_transaction_history_by_id(db_session, sys_user_payload, normal_user_payload, debit_transaction_payload,

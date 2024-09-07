@@ -209,3 +209,11 @@ def sys_user_debit_transaction_payload():
           "source": "SERVICE",
           "type": "debit"
     }
+
+
+@pytest.fixture()
+def block_wallet_request():
+    """Generate a credit transaction"""
+    return {
+          "is_blocked": True,
+    }

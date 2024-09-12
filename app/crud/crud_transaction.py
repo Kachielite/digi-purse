@@ -6,6 +6,7 @@ from app.schemas.TransactionSchemas import TransactionRequest
 from app.utilities.check_role import check_admin_user
 
 
+# top up wallet
 def top_wallet(db: Session, user: dict, request: TransactionRequest):
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
@@ -31,6 +32,7 @@ def top_wallet(db: Session, user: dict, request: TransactionRequest):
     return 200, {"message": "Wallet topped up successfully"}
 
 
+# debit wallet
 def debit_wallet(db: Session, user: dict, request: TransactionRequest):
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
@@ -65,6 +67,7 @@ def debit_wallet(db: Session, user: dict, request: TransactionRequest):
     return 200, {"message": "Wallet debited successfully"}
 
 
+# get all transactions
 def transaction_all_history(db: Session, user: dict, limit: int = 10, offset: int = 0):
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
@@ -87,6 +90,7 @@ def transaction_all_history(db: Session, user: dict, limit: int = 10, offset: in
     return 200, transactions_response
 
 
+# get user transactions
 def transaction_user_history(db: Session, user: dict, user_id: str, limit: int = 10, offset: int = 0):
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
@@ -118,6 +122,7 @@ def transaction_user_history(db: Session, user: dict, user_id: str, limit: int =
     return 200, transactions_response
 
 
+# get transaction by id
 def transaction_by_id(db: Session, user: dict, transaction_id: str):
     print(f"transaction_id: {transaction_id}")
     if check_admin_user(user) is None:

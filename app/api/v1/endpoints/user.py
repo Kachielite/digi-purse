@@ -6,7 +6,7 @@ from app.crud.crud_user import create_user, delete_user, update_user_data, get_a
 from app.schemas.UserSchemas import UserRequest, UserUpdateRequest
 from app.utilities.extract_user_info import get_user_info
 
-router = APIRouter(tags=["Manage users"], prefix="/users")
+router = APIRouter(tags=["Manage Users"], prefix="/users")
 
 
 @router.get("/", status_code=status.HTTP_200_OK)

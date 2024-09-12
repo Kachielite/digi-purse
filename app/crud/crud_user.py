@@ -13,15 +13,16 @@ def get_all_users(db: Session, user: dict):
     if check_admin_user(user) is None:
         return 401, {"message": "You do not have enough permission to view users"}
     users = db.query(User).all()
-    return 200, [UserResponse(
-        id=user.id,
-        username=user.username,
-        email=user.email,
-        phone_number=user.phone_number,
-        role=user.role,
-        is_active=user.is_active,
-        created_at=user.created_at.isoformat(timespec='milliseconds') + 'Z'
-    ) for user in users]
+    return 200, [{
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "phone_number": user.phone_number,
+        "role": user.role,
+        "is_active": user.is_active,
+        "created_at": user.created_at.isoformat(timespec='milliseconds') + 'Z',
+        "updated_at": user.updated_at.isoformat(timespec='milliseconds') + 'Z'
+    } for user in users]
 
 
 # Create new user

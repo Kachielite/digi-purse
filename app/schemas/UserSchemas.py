@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field, EmailStr, model_validator, root_validator
+from pydantic import BaseModel, Field, EmailStr, model_validator
 
 from app.enums.RoleEnum import RoleEnum
 
@@ -52,15 +52,18 @@ class UserResponse(BaseModel):
     role: RoleEnum
     is_active: bool
     created_at: str
+    updated_at: str
 
     class Config:
         json_schema_extra = {
             "example": {
+                "id": 1,
                 "username": "Carlos",
                 "email": "carlos@mail.com",
                 "phone_number": "234",
                 "role": "USER",
                 "is_active": True,
-                "created_at": "2021-09-01 12:00:00"
+                "created_at": "2024-08-23T04:57:22.403Z",
+                "updated_at": "2024-08-23T04:57:22.403Z"
             }
         }

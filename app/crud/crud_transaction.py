@@ -1,9 +1,12 @@
 from sqlalchemy.orm import Session
 
+from app.crud.crud_loyalty import POINTS_TO_CASH_RATE
+from app.models.Loyalty import Loyalty
 from app.models.Transaction import Transaction
 from app.models.Wallet import Wallet
 from app.schemas.TransactionSchemas import TransactionRequest
 from app.utilities.check_role import check_admin_user
+
 
 
 # top up wallet
@@ -60,6 +63,18 @@ def debit_wallet(db: Session, user: dict, request: TransactionRequest):
         source=request.source,
         description=f"Debit wallet by System Admin: {user.get('username')}",
     )
+
+    user_loyalty = db.query(Loyalty).filter(Loyalty.user_id == wallet_to_be_debited.user_id).first()
+
+    if user_loyalty:
+        user_loyalty.points += request.amount * POINTS_TO_CASH_RATE
+        db.add(user_loyalty)
+    else:
+        new_loyalty = Loyalty(
+            user_id=wallet_to_be_debited.user_id,
+            points=request.amount * POINTS_TO_CASH_RATE
+        )
+        db.add(new_loyalty)
 
     db.add(wallet_to_be_debited)
     db.add(transaction)

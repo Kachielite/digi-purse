@@ -217,3 +217,26 @@ def block_wallet_request():
     return {
           "is_blocked": True,
     }
+
+
+@pytest.fixture()
+def credit_transaction_payload_for_loyalty():
+    """Generate a credit transaction"""
+    return {
+          "amount": 10000,
+          "destination": "2349069943113",
+          "source": "TOP UP",
+          "type": "credit"
+    }
+
+
+@pytest.fixture()
+def debit_transaction_payload_for_loyalty():
+    """Generate a credit transaction"""
+    return {
+          "amount": 1000,
+          "destination": "2349069943113",
+          "source": "SERVICE",
+          "type": "debit"
+    }
+

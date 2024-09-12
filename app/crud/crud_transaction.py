@@ -1,11 +1,15 @@
 from sqlalchemy.orm import Session
 
+from app.crud.crud_loyalty import POINTS_TO_CASH_RATE
+from app.models.Loyalty import Loyalty
 from app.models.Transaction import Transaction
 from app.models.Wallet import Wallet
 from app.schemas.TransactionSchemas import TransactionRequest
 from app.utilities.check_role import check_admin_user
 
 
+
+# top up wallet
 def top_wallet(db: Session, user: dict, request: TransactionRequest):
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
@@ -31,6 +35,7 @@ def top_wallet(db: Session, user: dict, request: TransactionRequest):
     return 200, {"message": "Wallet topped up successfully"}
 
 
+# debit wallet
 def debit_wallet(db: Session, user: dict, request: TransactionRequest):
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
@@ -59,12 +64,25 @@ def debit_wallet(db: Session, user: dict, request: TransactionRequest):
         description=f"Debit wallet by System Admin: {user.get('username')}",
     )
 
+    user_loyalty = db.query(Loyalty).filter(Loyalty.user_id == wallet_to_be_debited.user_id).first()
+
+    if user_loyalty:
+        user_loyalty.points += request.amount * POINTS_TO_CASH_RATE
+        db.add(user_loyalty)
+    else:
+        new_loyalty = Loyalty(
+            user_id=wallet_to_be_debited.user_id,
+            points=request.amount * POINTS_TO_CASH_RATE
+        )
+        db.add(new_loyalty)
+
     db.add(wallet_to_be_debited)
     db.add(transaction)
     db.commit()
     return 200, {"message": "Wallet debited successfully"}
 
 
+# get all transactions
 def transaction_all_history(db: Session, user: dict, limit: int = 10, offset: int = 0):
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
@@ -87,6 +105,7 @@ def transaction_all_history(db: Session, user: dict, limit: int = 10, offset: in
     return 200, transactions_response
 
 
+# get user transactions
 def transaction_user_history(db: Session, user: dict, user_id: str, limit: int = 10, offset: int = 0):
     if check_admin_user(user) is None:
         return 403, {"message": "Unauthorized access"}
@@ -118,6 +137,7 @@ def transaction_user_history(db: Session, user: dict, user_id: str, limit: int =
     return 200, transactions_response
 
 
+# get transaction by id
 def transaction_by_id(db: Session, user: dict, transaction_id: str):
     print(f"transaction_id: {transaction_id}")
     if check_admin_user(user) is None:

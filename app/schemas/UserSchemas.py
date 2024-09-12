@@ -1,7 +1,6 @@
 from typing import Optional
 
 from pydantic import BaseModel, Field, EmailStr, model_validator
-from sqlalchemy import true
 
 from app.enums.RoleEnum import RoleEnum
 
@@ -63,7 +62,7 @@ class UserResponse(BaseModel):
                 "email": "carlos@mail.com",
                 "phone_number": "234",
                 "role": "USER",
-                "is_active": true,
+                "is_active": True,
                 "created_at": "2024-08-23T04:57:22.403Z",
                 "updated_at": "2024-08-23T04:57:22.403Z"
             }
